@@ -6,6 +6,12 @@
     <title data-i18n="langTitle"></title>
 
     <script src="language.js"></script>
+    <script>
+    // Apply direction immediately to prevent layout jump on load
+    const savedLang = localStorage.getItem('language') || 'en';
+    document.documentElement.dir = (savedLang === 'ar') ? 'rtl' : 'ltr';
+    document.documentElement.lang = savedLang;
+    </script>
 
 </head>
 <body>
