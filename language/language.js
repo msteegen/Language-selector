@@ -47,19 +47,24 @@
 // Function to toggle Arabic stylesheet based on language selection
 function toggleArabicStylesheet(lang) {
     const head = document.querySelector('head');
-    const link = document.querySelector('#styles-link');
-  
-    if (link) {
-      head.removeChild(link); // Remove the old stylesheet link
+    let link = document.querySelector('#styles-link');
+
+    if (lang === 'ar') {
+        // If it doesn't exist yet, create it
+        if (!link) {
+            link = document.createElement('link');
+            link.id = 'styles-link';
+            link.rel = 'stylesheet';
+            link.href = './assets/css/style-ar.css';
+            head.appendChild(link);
+        }
+    } else {
+        // If we are NOT in Arabic, remove the Arabic stylesheet if it exists
+        if (link) {
+            link.remove();
+        }
     }
-    else if (lang === 'ar') {
-        const newLink = document.createElement('link');
-        newLink.id = 'styles-link';
-        newLink.rel = 'stylesheet';
-        newLink.href = './assets/css/style-ar.css'; // Path to Arabic stylesheet
-        head.appendChild(newLink);
-      }
-  }
+}
   
   
   // Call updateContent() on page load
