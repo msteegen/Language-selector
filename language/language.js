@@ -7,27 +7,42 @@
   // Function to set the language preference
   function setLanguagePreference(lang) {
     localStorage.setItem('language', lang);
-    location.reload();
+    // location.reload();
   }
   
   // Function to update content based on selected language
   function updateContent(langData) {
-    document.querySelectorAll('[data-i18n]').forEach(element => {
-      const key = element.getAttribute('data-i18n');
-      element.textContent = langData[key];
-    });
-  }
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.getAttribute('data-i18n');
+    if (langData[key]) {
+      // If it's an input with a placeholder
+      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+        element.placeholder = langData[key];
+      } else {
+        element.textContent = langData[key];
+      }
+    }
+  });
+}
   
   // Function to change language
-  async function changeLanguage(lang) {
-    await setLanguagePreference(lang);
+    async function changeLanguage(lang) {
+    // Save the preference without reloading
+    localStorage.setItem('language', lang); 
     
+    // Fetch the new JSON data
     const langData = await fetchLanguageData(lang);
+    
+    // Update the text on the page instantly
     updateContent(langData);
 
-    //
-    toggleArabicStylesheet(lang);// Toggle Arabic stylesheet
-  }
+    // Toggle the Arabic stylesheet if needed
+    toggleArabicStylesheet(lang);
+    
+    // Optional: Update the <html> tag for SEO and accessibility
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+ }
 
 // Function to toggle Arabic stylesheet based on language selection
 function toggleArabicStylesheet(lang) {
