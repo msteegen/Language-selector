@@ -1,124 +1,119 @@
- // Function to fetch language data
- async function fetchLanguageData(lang) {
-    const response = await fetch(`./languages/${lang}.json`);
-    return response.json();
-  }
-  
-  // Function to set the language preference
-  function setLanguagePreference(lang) {
-    localStorage.setItem('language', lang);
-    // location.reload();
-  }
-  
-  // Function to update content based on selected language
-  function updateContent(langData) {
-  document.querySelectorAll('[data-i18n]').forEach(element => {
-    const key = element.getAttribute('data-i18n');
-    if (langData[key]) {
-      // If it's an input with a placeholder
-      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-        element.placeholder = langData[key];
-      } else {
-        element.textContent = langData[key];
-      }
+// Function to fetch language data
+async function fetchLanguageData(lang) {
+    const modules = ['home', 'common', 'world'];
+
+    try {
+        const promises = modules.map(async (module) => {
+            const res = await fetch(`./assets/languages/${lang}/${module}.json`);
+            
+            if (!res.ok) {
+                console.warn(`Could not load module "${module}" for language "${lang}".`);
+                return {};
+            }
+
+            const text = await res.text();
+            // Fall back to empty object if file is empty
+            return text.trim() ? JSON.parse(text) : {};
+        });
+
+        const dataArrays = await Promise.all(promises);
+
+        // Merge all objects into one
+        return Object.assign({}, ...dataArrays);
+    } catch (error) {
+        console.error("Could not load language files", error);
+        return {};
     }
-  });
 }
-  
-  // Function to change language
-    async function changeLanguage(lang) {
-    // Save the preference without reloading
-    localStorage.setItem('language', lang); 
+
+// Function to update static text on the page
+function updateContent(langData) {
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (langData[key]) {
+            // Find the associated label if it exists
+            const label = document.querySelector(`label[for="${element.id}"]`);
+            
+            // 1. Always update the label if found
+            if (label) {
+                label.innerHTML = langData[key];
+            }
+
+            // 2. Always update placeholder if the element is an input
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                element.placeholder = langData[key];
+            }
+
+            // 3. Update innerHTML for standard text tags (h1, p, etc.) 
+            // only if they aren't inputs (to avoid overwriting input values)
+            if (element.tagName !== 'INPUT' && element.tagName !== 'TEXTAREA') {
+                element.innerHTML = langData[key];
+            }
+        }
+    });
+}
+
+// Function to change language
+async function changeLanguage(lang) {
+    // Save language to localStorage
+    localStorage.setItem('language', lang);
     
-    // Fetch the new JSON data
     const langData = await fetchLanguageData(lang);
+    window.currentLangData = langData; // Store globally for renderProducts
     
-    // Update the text on the page instantly
-    updateContent(langData);
-
-    // Toggle the Arabic stylesheet if needed
-    toggleArabicStylesheet(lang);
-    
-    // Optional: Update the <html> tag for SEO and accessibility
-    document.documentElement.lang = lang;
+    // Update direction and HTML attributes
     document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
- }
+    document.documentElement.lang = lang;
 
-// Function to toggle Arabic stylesheet based on language selection
+    updateContent(langData);
+    toggleArabicStylesheet(lang);
+
+    // Update active button state
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.id === `lang-${lang}`);
+    });
+
+    // Refresh the shop cards with the new language formatting
+    if (typeof renderProducts === "function") {
+        renderProducts();
+    }
+}
+
 function toggleArabicStylesheet(lang) {
     const head = document.querySelector('head');
     let link = document.querySelector('#styles-link');
-
     if (lang === 'ar') {
-        // If it doesn't exist yet, create it
         if (!link) {
             link = document.createElement('link');
             link.id = 'styles-link';
             link.rel = 'stylesheet';
-            link.href = './assets/css/style-ar.css';
+            link.href = './css/style-ar.css';
             head.appendChild(link);
         }
-    } else {
-        // If we are NOT in Arabic, remove the Arabic stylesheet if it exists
-        if (link) {
-            link.remove();
-        }
+    } else if (link) {
+        link.remove();
     }
 }
-  
-  
-  // Call updateContent() on page load
-  window.addEventListener('DOMContentLoaded', async () => {
+
+// Function to bind click events to language selection links
+function setupLanguageSwitcher() {
+    document.querySelectorAll('.mobile-action[data-type="language"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevents the link from scrolling to the top (#)
+            
+            const selectedLang = link.getAttribute('data-value');
+            if (selectedLang) {
+                changeLanguage(selectedLang);
+            }
+        });
+    });
+}
+
+// Initial load on page start
+window.addEventListener('DOMContentLoaded', async () => {
     const userPreferredLanguage = localStorage.getItem('language') || 'en';
-    const langData = await fetchLanguageData(userPreferredLanguage);
-    updateContent(langData);
-    toggleArabicStylesheet(userPreferredLanguage);
-  });
-  
-
-// let enData, arData; // Define variables to hold language data
-
-// // Load language data based on user preference or default to English
-// const userPreferredLanguage = localStorage.getItem('language') || 'en';
-
-// // Load English data
-// fetch('languages/en.json')
-//   .then(response => response.json())
-//   .then(data => {
-//     console.log(data)
-//     enData = data;
-//     if (userPreferredLanguage === 'en') {
-//       updateContent();
-//     }
-//   });
-
-// // Load Arabic data
-// fetch('languages/ar.json')
-//   .then(response => response.json())
-//   .then(data => {
-//     console.log(data)
-//     arData = data;
-//     if (userPreferredLanguage === 'ar') {
-//       updateContent();
-//     }
-//   });
-//   function updateContent() {
-//     const langToUse = userPreferredLanguage === 'ar' ? arData : enData;
+    await changeLanguage(userPreferredLanguage);
     
-//     document.querySelectorAll('[data-i18n]').forEach(element => {
-//       const key = element.getAttribute('data-i18n');
-//       element.textContent = langToUse[key];
-//     });
-//   }
-
-//   // Function to change language
-//   function changeLanguage(lang) {
-//     localStorage.setItem('language', lang);
-//     location.reload();
-//   }
-  
-//   // Call updateContent() on page load
-//   window.addEventListener('DOMContentLoaded', () => {
-//     updateContent();
-//   });
-  
+    // Bind click handlers to language menu items
+    setupLanguageSwitcher();
+});
