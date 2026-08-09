@@ -129,7 +129,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    const validLangs = ['en', 'pt', 'es', 'nl'];
+    const supportedLanguages = ['en', 'pt', 'es', 'nl'];
 
     // 3. Check if extracted code is supported
     const validUrlLang = supportedLanguages.includes(cleanUrlLang) ? cleanUrlLang : null;
