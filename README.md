@@ -10,9 +10,9 @@ A modern, responsive, multi-language web application built with vanilla JavaScri
 ## ✨ Features
 
 * **Dynamic Multi-Language System (`i18n`)**: Asynchronously fetches modular JSON translation files without requiring full page reloads.
-* **Seamless URL Routing**: Updates the browser address bar dynamically using the HTML5 `history.pushState()` API (e.g., `?lang=nl`, `?lang=pt`, `?lang=es`)[cite: 8].
+* **Seamless URL Routing**: Updates the browser address bar dynamically using the HTML5 `history.pushState()` API (e.g., `?lang=nl`, `?lang=pt`, `?lang=es`).
 * **Glassmorphism UI & Animations**: Built from scratch using modern CSS3 keyframe animations, responsive grid layouts, and interactive UI states.
-* **Browser History Support**: Fully supports native browser back and forward navigation using `popstate`[cite: 11].
+* **Browser History Support**: Fully supports native browser back and forward navigation using `popstate`.
 * **Production-Ready Hosting**: Deployed securely on Firebase Hosting with static global CDN caching optimizations.
 
 ---
