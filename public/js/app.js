@@ -67,7 +67,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const urlLang = params.get('lang');
     const savedLang = localStorage.getItem('language');
     
-    const validLangs = ['en', 'nl'];
+    const validLangs = ['en', 'pt', 'es', 'nl'];
     let initialLang = 'en';
 
     if (urlLang && validLangs.includes(urlLang)) {
