@@ -1,0 +1,172 @@
+/* --- CSS3 Variables & Reset --- */
+:root {
+    --primary: #2d6a4f;
+    --secondary: #1b4332;
+    --accent: #d8f3dc;
+    --text-light: #f8f9fa;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Animated Background --- */
+body {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+    padding: 2rem;
+}
+
+/* Floating CSS Particles */
+.leaf {
+    position: absolute;
+    background: rgba(216, 243, 220, 0.15);
+    border-radius: 50% 0 50% 0;
+    animation: float 15s infinite linear;
+    z-index: 0;
+}
+.leaf:nth-child(1) { width: 40px; height: 40px; top: 10%; left: 20%; animation-duration: 20s; }
+.leaf:nth-child(2) { width: 60px; height: 60px; top: 70%; left: 80%; animation-duration: 25s; }
+.leaf:nth-child(3) { width: 30px; height: 30px; top: 40%; left: 60%; animation-duration: 18s; }
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* --- Layout Containers --- */
+.dashboard-container {
+    width: 100%;
+    max-width: 1000px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* --- Glassmorphism Cards --- */
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hero-card {
+    text-align: center;
+    padding: 3rem;
+    animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sub-card {
+    animation: fadeUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    transition: transform 0.3s ease;
+}
+
+.sub-card:nth-child(2) { animation-delay: 0.1s; }
+.sub-card:nth-child(3) { animation-delay: 0.2s; }
+
+.sub-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Typography & Elements --- */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+    color: var(--accent);
+}
+
+p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--accent);
+}
+
+.sub-card p {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+    color: var(--text-light);
+    opacity: 0.9;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Content Transition Class */
+.content-fade {
+    animation: textSwap 0.5s ease-in-out forwards;
+}
+
+@keyframes textSwap {
+    0% { opacity: 0; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- Language Controls --- */
+.lang-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.lang-btn {
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid var(--accent);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.lang-btn:hover {
+    background: rgba(216, 243, 220, 0.1);
+    transform: translateY(-2px);
+}
+
+.lang-btn.active {
+    background: var(--accent);
+    color: var(--secondary);
+    box-shadow: 0 0 15px rgba(216, 243, 220, 0.5);
+}

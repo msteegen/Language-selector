@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="Title">Botaniq | Green Directory</title>
+
+    <link rel="stylesheet" href="css/home.css">
+
+    <script src="js/language.js" defer></script>
+    <script src="js/app.js"></script>
+    <script>
+    // Apply direction immediately to prevent layout jump on load
+    const savedLang = localStorage.getItem('language') || 'en';
+    document.documentElement.dir = (savedLang === 'ar') ? 'rtl' : 'ltr';
+    document.documentElement.lang = savedLang;
+    </script>
+
+</head>
+<body>
+    
+<!-- CSS Particles -->
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+    <div class="leaf"></div>
+
+    <!-- Main Content Area -->
+    <div class="dashboard-container" id="dynamic-content">
+        
+        <!-- Header Hero Card -->
+        <div class="card hero-card">
+            <h1 data-i18n="welcome_title">Loading...</h1>
+            <p data-i18n="home_description">Please wait while we load the directory.</p>
+            
+            <nav class="lang-controls">
+                <a href="#" class="lang-btn active" id="lang-en" onclick="switchLanguage('en', event)">EN</a>
+                <a href="#" class="lang-btn" id="lang-pt" onclick="switchLanguage('pt', event)">PT</a>
+                <a href="#" class="lang-btn" id="lang-es" onclick="switchLanguage('es', event)">ES</a>
+                <a href="#" class="lang-btn" id="lang-nl" onclick="switchLanguage('nl', event)">NL</a>
+            </nav>
+        </div>
+
+        <!-- Expanded Card Grid -->
+        <div class="card-grid">
+            <div class="card sub-card">
+                <div class="card-icon">🌿</div>
+                <h2 data-i18n="card1_title"></h2>
+                <p data-i18n="card1_desc"></p>
+            </div>
+            
+            <div class="card sub-card">
+                <div class="card-icon">🌳</div>
+                <h2 data-i18n="card2_title"></h2>
+                <p data-i18n="card2_desc"></p>
+            </div>
+
+            <div class="card sub-card">
+                <div class="card-icon">⚙️</div>
+                <h2 data-i18n="card3_title"></h2>
+                <p data-i18n="card3_desc"></p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
