@@ -60,9 +60,10 @@ function updateContent(langData) {
 
 // Function to change language
 async function changeLanguage(lang) {
-    // Save language to localStorage
+    // 1. Save language to localStorage
     localStorage.setItem('language', lang);
     
+    // 2. Fetch data and update page content
     const langData = await fetchLanguageData(lang);
     window.currentLangData = langData;
     
@@ -73,11 +74,16 @@ async function changeLanguage(lang) {
     updateContent(langData);
     toggleArabicStylesheet(lang);
 
-    // Update active button state
+    // 3. Update active button state
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.id === `lang-${lang}`);
     });
+
+    // 4. Update URL in browser address bar without reloading
+    const newUrl = `${window.location.pathname}?lang=${lang}`;
+    window.history.pushState({ lang: lang }, '', newUrl);
 }
+
 
 function toggleArabicStylesheet(lang) {
     const head = document.querySelector('head');
