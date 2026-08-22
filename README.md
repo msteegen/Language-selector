@@ -2,10 +2,10 @@
 
 A modern, responsive, multi-language web application built with vanilla JavaScript, CSS3 glassmorphism, and dynamic JSON translation loading. Designed as a clean directory for flora, arboriculture, and professional outdoor power equipment.
 
-https://app-test-4c928.web.app/?lang=nl
-
 ![Live Deployment](https://img.shields.io/badge/Status-Live%20on%20Firebase-orange?style=flat-square&logo=firebase)
 ![Languages Supported](https://img.shields.io/badge/Languages-EN%20%7C%20NL%20%7C%20PT%20%7C%20ES-brightgreen?style=flat-square)
+
+https://app-test-4c928.web.app/?lang=en
 
 ---
 
